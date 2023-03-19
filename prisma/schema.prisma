@@ -17,6 +17,8 @@ model User {
   posts Post[]
   createdAt DateTime  @default(now()) @map(name: "created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map(name: "updated_at")
+
+  password String?
 }
 
 model Post {
