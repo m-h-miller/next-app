@@ -2,24 +2,22 @@
 import prisma from '../../prisma/';
 import bcrypt from 'bcrypt';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === 'POST') {
-        // Process a POST request
-        console.log({ req });
-        console.log({ query: req.query });
-
         try {
             const { email, name, password } = req.query;
+
+            let pass = bcrypt.hashSync(password, 8);
     
-            const user = prisma.user.create({
+            const user = await prisma.user.create({
                 data: {
                     email,
                     name,
-                    password: bcrypt.hashSync(password, 8),
+                    password: pass
                 }
             });
 
-            console.log({ user })
+            delete user.password;
     
             res.status(200).json({ user })
         } catch (e) {
@@ -28,6 +26,6 @@ export default function handler(req, res) {
         }
     } else {
         // Handle any other HTTP method
-        res.status(200).json({ name: 'johhn doe"'})
+        res.status(500).json();
     }
 }

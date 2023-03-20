@@ -1,11 +1,37 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import prisma from '../../prisma/';
+import bcrypt from 'bcrypt';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === 'POST') {
         // Process a POST request
-        console.log({ req });
+        try {
+            const { email, password } = req.query;
+
+            const user = await prisma.user.findUnique({
+                where: {
+                    email: email,
+                }
+            });
+
+            if (!user) {
+                return res.status(500).json();
+            }
+
+            const checkPassword = bcrypt.compareSync(password, user.password);
+
+            if (checkPassword) {
+                delete user.password;
+                res.status(200).json({ user })
+            } else {
+                res.status(500).json();
+            }
+
+        } catch (e) {
+            console.error(e);
+            res.status(500).json();
+        }
     } else {
-        // Handle any other HTTP method
+        res.status(500).json();
     }
 }
-  
