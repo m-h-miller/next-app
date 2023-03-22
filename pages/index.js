@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Link from 'next/link'
@@ -38,17 +37,15 @@ export default function Home() {
                 </h2>
               </Link>
             </div>
-          <div style={{ alignSelf: 'right' }}>
-              <a
-                href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            <div style={{ alignSelf: 'right' }}>
+              <Link
                 className={styles.card}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/register"
               >
                 <h2 className={inter.className}>
                   Sign Up <span>-&gt;</span>
                 </h2>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
