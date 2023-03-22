@@ -7,7 +7,9 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const getStaticProps = async () => {
-  
+  return {
+    props: {}
+  }
 }
 
 export default function Home() {
