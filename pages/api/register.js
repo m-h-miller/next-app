@@ -22,7 +22,7 @@ export default async function handler(req, res) {
             res.status(200).json({ user })
         } catch (e) {
             console.error(e);
-            res.status(500).json();
+            res.status(500).json("Internal server error");
         }
     } else {
         // Handle any other HTTP method
