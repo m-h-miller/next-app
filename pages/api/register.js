@@ -21,8 +21,12 @@ export default async function handler(req, res) {
     
             res.status(200).json({ user })
         } catch (e) {
-            console.error(e);
-            res.status(500).json("Internal server error");
+            if (e.code === "P2002") {
+                return res.status(500).json({
+                    error: "Already registered"
+                });
+            }
+            return res.status(500).json({ error: "Operation failed" });
         }
     } else {
         // Handle any other HTTP method

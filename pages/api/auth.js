@@ -23,6 +23,7 @@ export default async function handler(req, res) {
             }
 
             const checkPassword = bcrypt.compareSync(password, user.password);
+            console.log({ checkPassword })
 
             if (checkPassword) {
                 delete user.password;
