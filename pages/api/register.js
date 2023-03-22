@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         try {
-            const { email, name, password } = req.query;
+            const { email, name, password } = req.body;
 
             let pass = bcrypt.hashSync(password, 8);
     
