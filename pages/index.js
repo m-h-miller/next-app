@@ -2,8 +2,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
+
+export const getStaticProps = async () => {
+  
+}
 
 export default function Home() {
   return (
@@ -22,19 +27,14 @@ export default function Home() {
           </p>
           <div style={{ display: 'flex' }}>
             <div style={{ alignSelf: 'right' }}>
-              <a
-                href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              <Link
                 className={styles.card}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/login"
               >
                 <h2 className={inter.className}>
                   Log In <span>-&gt;</span>
                 </h2>
-                {/* <p className={inter.className}>
-                  Find in-depth information about Next.js features and&nbsp;API.
-                </p> */}
-              </a>
+              </Link>
             </div>
           <div style={{ alignSelf: 'right' }}>
               <a
@@ -46,32 +46,12 @@ export default function Home() {
                 <h2 className={inter.className}>
                   Sign Up <span>-&gt;</span>
                 </h2>
-                {/* <p className={inter.className}>
-                  Find in-depth information about Next.js features and&nbsp;API.
-                </p> */}
               </a>
             </div>
           </div>
         </div>
 
         <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
         </div>
 
       </main>

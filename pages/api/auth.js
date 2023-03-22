@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
         // Process a POST request
         try {
-            const { email, password } = req.query;
+            const { email, password } = req.body;
 
             const user = await prisma.user.findUnique({
                 where: {
@@ -22,9 +22,9 @@ export default async function handler(req, res) {
 
             if (checkPassword) {
                 delete user.password;
-                res.status(200).json({ user })
+                res.status(200).json({ user });
             } else {
-                res.status(500).json();
+                res.status(500).json("Internal server error");
             }
 
         } catch (e) {
