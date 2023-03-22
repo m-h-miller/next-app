@@ -1,6 +1,8 @@
 import styles from '@/styles/Home.module.css'
+import { useRouter } from 'next/router'
 
 export default function Login() {
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,7 +22,10 @@ export default function Login() {
 
     const result = await response.json()
 
-    console.log({ result })
+    if (result.user) {
+      localStorage.setItem('user', JSON.stringify(result.user));
+      router.push('/feed');
+    }
   }
   return (
     <>

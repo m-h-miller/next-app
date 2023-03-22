@@ -24,7 +24,7 @@ export default function Login() {
 
     if (result) {
       console.log({ result })
-      // router.push('/feed')
+      router.push('/login');
     }
   }
 

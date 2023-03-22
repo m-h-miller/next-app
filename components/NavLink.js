@@ -8,7 +8,7 @@ const NavLink = ({ href, as, children }) => {
   return (
     <Link href={href} as={as} passHref legacyBehavior>
       <a className={`nav-link ${
-          encodeURIComponent(asPath) === encodeURIComponent(as) && `active`
+          encodeURIComponent(asPath) === encodeURIComponent(href) && `active`
         }`}>
         {children}
       </a>

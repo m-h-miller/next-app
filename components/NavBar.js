@@ -2,11 +2,22 @@ import React from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavBar from 'react-bootstrap/Navbar';
+import NavLink from "./NavLink";
+import { useRouter } from 'next/router'
+import storage from "@/utils/storage";
+import useSWR, { mutate } from "swr";
 import Link from "next/link";
 
 const Navbar = () => {
-  const isLoggedIn = false;
+  const router = useRouter();
+  const { data: currentUser } = useSWR("user", storage);
+  const isLoggedIn = !!currentUser;
 
+  const logOut = () => {
+    localStorage.removeItem('user');
+    mutate('user', null);
+    router.push('/');
+  };
 
   return (
     <NavBar bg="light" expand="lg">
@@ -21,7 +32,11 @@ const Navbar = () => {
             {isLoggedIn ? (
               <>
                 <li style={{ padding: '1rem' }}>
-                  <Link href="/out" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Link
+                    href="#"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                    onClick={logOut}
+                  >
                     Sign Out
                   </Link>
                 </li>
@@ -29,15 +44,14 @@ const Navbar = () => {
             ) : (
               <>
                 <li style={{ padding: '1rem' }}>
-                  <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <NavLink href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
                     Sign In
-                  </Link>
+                  </NavLink>
                 </li>
                 <li style={{ padding: '1rem' }}>
-                  <Link href="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <NavLink href="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
                     Register
-                  </Link>
-
+                  </NavLink>
                 </li>
               </>
             )}
