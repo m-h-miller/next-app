@@ -5,17 +5,17 @@ import NavBar from 'react-bootstrap/Navbar';
 import NavLink from "./NavLink";
 import { useRouter } from 'next/router'
 import storage from "@/utils/storage";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import Link from "next/link";
 
 const Navbar = () => {
   const router = useRouter();
-  const { data: currentUser } = useSWR("user", storage);
+  const { data: currentUser, mutate } = useSWR("user", storage);
   const isLoggedIn = !!currentUser;
 
   const logOut = () => {
     localStorage.removeItem('user');
-    mutate('user', null);
+    mutate();
     router.push('/');
   };
 

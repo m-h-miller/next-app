@@ -1,5 +1,6 @@
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+import { NotificationManager } from 'react-notifications';
 
 export default function Login() {
   const router = useRouter();
@@ -25,15 +26,14 @@ export default function Login() {
     if (result.user) {
       localStorage.setItem('user', JSON.stringify(result.user));
       router.push('/feed');
+    } else {
+      NotificationManager.error("Failed to authenticate");
     }
   }
   return (
     <>
       <div className={styles.description} style={{ justifyContent: 'space-around' }}>
-        <p>
-          Login&nbsp;
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <p>Login&nbsp;</p>
 
         <form onSubmit={handleSubmit} style={{
           display: 'flex',
