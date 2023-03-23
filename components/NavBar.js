@@ -10,6 +10,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   const router = useRouter();
+  const { asPath } = router;
   const { data: currentUser, mutate } = useSWR("user", storage);
   const isLoggedIn = !!currentUser;
 
@@ -33,9 +34,35 @@ const Navbar = () => {
               <>
                 <li style={{ padding: '1rem' }}>
                   <Link
+                    className={`${asPath === '/profile' && 'active'}`}
+                    href="/profile"
+                    style={{
+                      textDecoration: 'none',
+                      color: asPath === '/profile' ? 'inherit' : 'rgba(0, 0, 0, 0.7)'
+                    }}
+                  >
+                    {currentUser?.email}
+                  </Link>
+                </li>
+                <li style={{ padding: '1rem' }}>
+                  <Link
+                    className={`${asPath === '/new' && 'active'}`}
+                    href="/new"
+                    style={{
+                      textDecoration: 'none',
+                      color: asPath === '/new' ? 'inherit' : 'rgba(0, 0, 0, 0.7)'
+                    }}
+                  >
+                    New Post
+                  </Link>
+                </li>
+                <li style={{ padding: '1rem' }} onClick={logOut}>
+                  <Link
                     href="#"
-                    style={{ textDecoration: 'none', color: 'inherit' }}
-                    onClick={logOut}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'rgba(0, 0, 0, 0.7)'
+                    }}
                   >
                     Sign Out
                   </Link>

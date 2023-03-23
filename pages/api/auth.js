@@ -14,8 +14,6 @@ export default async function handler(req, res) {
                 }
             });
 
-            console.log({ user })
-
             if (!user) {
                 return res.status(500).json();
             }
@@ -25,6 +23,15 @@ export default async function handler(req, res) {
 
             if (checkPassword) {
                 delete user.password;
+
+                const session = await prisma.session.create({
+                    data: {
+                        userId: user.id
+                    }
+                })
+
+                user.sessionToken = session.id
+
                 res.status(200).json({ user });
             } else {
                 res.status(500).json("Internal server error");
