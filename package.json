@@ -17,11 +17,13 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "next": "13.2.4",
+    "next-superjson": "^0.0.4",
     "prisma": "^4.11.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "18.2.0",
     "react-notifications": "^1.7.4",
+    "superjson": "^1.12.2",
     "swr": "^2.1.1"
   }
 }

@@ -6,7 +6,7 @@ import storage from "@/utils/storage";
 
 export default function Login() {
   const router = useRouter();
-  const { data: currentUser, mutate } = useSWR("user", storage);
+  const { data: currentUser } = useSWR("user", storage);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,7 +17,7 @@ export default function Login() {
         content: event.target.content.value,
       }
   
-      const response = await fetch('/api/new', {
+      const response = await fetch('/api/posts/new', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,10 +28,10 @@ export default function Login() {
       })
   
       const result = await response.json()
+      console.log({ result })
   
-      if (result.user) {
-        localStorage.setItem('user', JSON.stringify(result.user));
-        router.push('/feed');
+      if (result?.data?.id) {
+        router.push(`/posts/${result.data.id}`);
       } else {
         NotificationManager.error("Failed to authenticate");
       }
@@ -67,4 +67,11 @@ export default function Login() {
       </div>
     </>
   );
+}
+
+export const getStaticProps = (context) => {
+  console.log({ context })
+  return {
+    props: {}
+  }
 }

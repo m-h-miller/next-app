@@ -34,8 +34,8 @@ const Navbar = () => {
               <>
                 <li style={{ padding: '1rem' }}>
                   <Link
-                    className={`${asPath === '/profile' && 'active'}`}
-                    href="/profile"
+                    className={`${asPath === `/profile/${currentUser.id}` && 'active'}`}
+                    href={`/profile/${currentUser.id}`}
                     style={{
                       textDecoration: 'none',
                       color: asPath === '/profile' ? 'inherit' : 'rgba(0, 0, 0, 0.7)'
