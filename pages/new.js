@@ -28,7 +28,6 @@ export default function Login() {
       })
   
       const result = await response.json()
-      console.log({ result })
   
       if (result?.data?.id) {
         router.push(`/posts/${result.data.id}`);

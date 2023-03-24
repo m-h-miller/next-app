@@ -1,11 +1,11 @@
 import prisma from '@/prisma/';
 import storage from "@/utils/storage";
-import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import useSWR from "swr";
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { NotificationManager } from 'react-notifications';
+import { useEffect, useState } from 'react';
 
 const Post = ({ post = {} }) => {
   const { data: currentUser } = useSWR("user", storage);
@@ -13,14 +13,29 @@ const Post = ({ post = {} }) => {
 
   const router = useRouter()
 
-  const handleDelete = async (e) => {
+  useEffect(() => {
+    if (!isAuthor) {
+      router.push('/')
+    }
+  }, [])
+
+  console.log({ post })
+
+  const [published, setPublished] = useState(post.published)
+  const [title, setTitle] = useState(post.title)
+  const [content, setContent] = useState(post.content)
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     const data = {
-      id: post.id
+      id: post.id,
+      title,
+      published,
+      content
     }
 
-    const response = await fetch('/api/posts/delete', {
+    const response = await fetch('/api/posts/update', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +45,8 @@ const Post = ({ post = {} }) => {
     }).then(res => res.json())
 
     if (response?.success) {
-      NotificationManager.success("Successfully deleted")
-      router.push('/')
+      NotificationManager.success("Successfully updated")
+      router.push(`/posts/${post.id}`)
     }
   }
 
@@ -40,39 +55,45 @@ const Post = ({ post = {} }) => {
       <div>
         <div style={{ padding: '2rem', background: '#333', color: 'white' }}>
           <Container>
-            <h1>{post.title}</h1>
+            <input
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              placeholder={title}
+            />
             <p style={{ display: 'flex', flexDirection: 'column' }}>
               <small>Created: {post.createdAt?.toLocaleString()}</small>
               <small>Updated: {post.updatedAt?.toLocaleString()}</small>
             </p>
             <p>
-              <span>Published: {post.published?.toString()}</span>
+              <span>Published:
+                <input
+                  type="checkbox"
+                  value={published}
+                  onChange={e => {
+                    console.log(e.target.value)
+                    setPublished(!published)
+                  }}
+                />
+              </span>
             </p>
-            {isAuthor ? (
-              <>
-                <Link href={`/posts/${post.id}/edit`}>
-                  <Button variant="outline-secondary">
-                    Edit
-                  </Button>
-                </Link>
-                {'   '}
-                <Button variant="outline-danger" onClick={handleDelete}>
-                  Delete
-                </Button>
-              </>
-            ) : null}
           </Container>
-
         </div>
  
       </div>
       <div style={{ padding: '2rem' }}>
       <Container>
         <p>
-          {post.content}
+          <textarea
+            style={{ width: '100%' }}
+            onChange={e => setContent(e.target.value)}
+            value={content}
+          />
         </p>
         <p>
-          {JSON.stringify(post)}
+          <Button
+            variant="outline-secondary"
+            onClick={handleUpdate}
+          >Update</Button>
         </p>
       </Container>
       </div>
