@@ -1,4 +1,5 @@
 import prisma from '@/prisma/';
+import Link from 'next/link';
 
 export default function Profile({ posts }) {
   const handleSubmit = async (e) => {
@@ -34,7 +35,13 @@ export default function Profile({ posts }) {
       </div>
       <div>
         <p>My Posts</p>
-        {JSON.stringify({ posts })}
+        {
+          posts.map(i => (
+            <li>
+              <Link href={`/posts/${i.id}`}>{i.title}</Link>
+            </li>
+          ))
+        }
       </div>
     </>
   );
@@ -46,7 +53,8 @@ export async function getServerSideProps(context) {
   const posts = await prisma.post.findMany({
     where: {
       authorId: userId
-    }
+    },
+    take: 10
   })
 
   return {
