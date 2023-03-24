@@ -37,7 +37,7 @@ export default function Profile({ posts }) {
         <p>My Posts</p>
         {
           posts.map(i => (
-            <li>
+            <li key={i.id}>
               <Link href={`/posts/${i.id}`}>{i.title}</Link>
             </li>
           ))
