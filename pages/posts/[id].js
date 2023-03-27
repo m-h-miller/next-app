@@ -6,10 +6,10 @@ import useSWR from "swr";
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { NotificationManager } from 'react-notifications';
+import OwnedByCurrentUser from '@/components/OwnedByCurrentUser';
 
 const Post = ({ post = {} }) => {
   const { data: currentUser } = useSWR("user", storage);
-  const isAuthor = post?.author?.id === currentUser?.id;
 
   const router = useRouter()
 
@@ -48,19 +48,17 @@ const Post = ({ post = {} }) => {
             <p>
               <span>Published: {post.published?.toString()}</span>
             </p>
-            {isAuthor ? (
-              <>
-                <Link href={`/posts/${post.id}/edit`}>
-                  <Button variant="outline-secondary">
-                    Edit
-                  </Button>
-                </Link>
-                {'   '}
-                <Button variant="outline-danger" onClick={handleDelete}>
-                  Delete
+            <OwnedByCurrentUser ownerId={post?.author?.id}>
+              <Link href={`/posts/${post.id}/edit`}>
+                <Button variant="outline-secondary">
+                  Edit
                 </Button>
-              </>
-            ) : null}
+              </Link>
+              {'   '}
+              <Button variant="outline-danger" onClick={handleDelete}>
+                Delete
+              </Button>
+            </OwnedByCurrentUser>
           </Container>
 
         </div>
@@ -70,9 +68,6 @@ const Post = ({ post = {} }) => {
       <Container>
         <p>
           {post.content}
-        </p>
-        <p>
-          {JSON.stringify(post)}
         </p>
       </Container>
       </div>

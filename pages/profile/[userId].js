@@ -14,15 +14,11 @@ export default function Profile({ posts }) {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-        // 'User-Id': 
         body: JSON.stringify(data)
       }
     }).then(res => res.json())
-
-    console.log({ response })
-
-
   }
+
   return (
     <>
       <div>

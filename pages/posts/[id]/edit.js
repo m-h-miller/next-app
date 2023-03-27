@@ -19,8 +19,6 @@ const Post = ({ post = {} }) => {
     }
   }, [])
 
-  console.log({ post })
-
   const [published, setPublished] = useState(post.published)
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
