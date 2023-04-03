@@ -1,4 +1,3 @@
-// import '@/styles/globals.css'
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/NavBar'
@@ -6,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-notifications/lib/notifications.css';
 
 import { NotificationContainer } from 'react-notifications';
+import React from 'react';
 
 export default function App({ Component, pageProps }) {
   return (
