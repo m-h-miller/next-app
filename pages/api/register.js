@@ -26,6 +26,8 @@ export default async function handler(req, res) {
                     error: "Already registered"
                 });
             }
+
+            console.error(e);
             return res.status(500).json({ error: "Operation failed" });
         }
     } else {

@@ -27,7 +27,9 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(result.user));
       router.push('/feed');
     } else {
-      NotificationManager.error("Failed to authenticate");
+      NotificationManager.error(
+        result.error ? result.error : "Failed to authenticate"
+      );
     }
   }
   return (

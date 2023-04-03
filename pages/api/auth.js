@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             });
 
             if (!user) {
-                return res.status(500).json();
+                return res.status(500).json({ error: "User not found" });
             }
 
             const checkPassword = bcrypt.compareSync(password, user.password);

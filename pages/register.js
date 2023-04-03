@@ -25,7 +25,7 @@ export default function Login() {
 
     if (result) {
       if (result.error) {
-        NotificationManager.error(error);
+        NotificationManager.error(result.error);
       } else {
         router.push('/login');
       }
