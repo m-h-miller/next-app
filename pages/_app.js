@@ -6,7 +6,7 @@ import 'react-notifications/lib/notifications.css';
 import NotificationProvider from '../components/NotificationProvider';
 import { NotificationContainer } from 'react-notifications';
 import React from 'react';
-import Notification from '../components/Notification'
+import Notification from '../components/Notification.tsx'
 
 export default function App({ Component, pageProps }) {
   return (

@@ -1,7 +1,7 @@
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
 import { Container } from 'react-bootstrap';
-import useNotification from '../hooks/useNotification';
+import useNotification from '../hooks/useNotification.ts';
 
 export default function Login() {
   const router = useRouter();

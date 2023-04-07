@@ -14,9 +14,10 @@ function Notification() {
         show={!!notification?.message}
         onClose={removeNotification}
         style={{
-            position: 'fixed',
-            bottom: '40px',
-            right: '40px',
+            position: 'absolute',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 1,
         }}
         bg={variant}
     >
