@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import styles from '@/styles/Home.module.css'
-import { NotificationManager } from 'react-notifications';
+import { Container } from 'react-bootstrap';
+import useNotification from '../hooks/useNotification';
 
 export default function Login() {
   const router = useRouter();
+  const { addNotification } = useNotification();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,7 +27,10 @@ export default function Login() {
 
     if (result) {
       if (result.error) {
-        NotificationManager.error(result.error);
+        addNotification({
+          message: result.error,
+          status: "danger"
+        });
       } else {
         router.push('/login');
       }
@@ -35,18 +40,20 @@ export default function Login() {
   return (
     <>
       <div className={styles.description} style={{ justifyContent: 'space-around' }}>
-        <p>Register</p>
+        <Container>
+          <p>Register</p>
 
-        <form onSubmit={handleSubmit} style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-          <label htmlFor="email">Email:</label>
-          <input type="text" id="email" name="email" />
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" />
-          <button type="submit">Submit</button>
-        </form>
+          <form onSubmit={handleSubmit} style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+            <label htmlFor="email">Email:</label>
+            <input type="text" id="email" name="email" />
+            <label htmlFor="password">Password:</label>
+            <input type="password" id="password" name="password" />
+            <button type="submit">Submit</button>
+          </form>
+        </Container>
       </div>
     </>
   );

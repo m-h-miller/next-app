@@ -3,9 +3,10 @@ import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/NavBar'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-notifications/lib/notifications.css';
-
+import NotificationProvider from '../components/NotificationProvider';
 import { NotificationContainer } from 'react-notifications';
 import React from 'react';
+import Notification from '../components/Notification'
 
 export default function App({ Component, pageProps }) {
   return (
@@ -18,7 +19,10 @@ export default function App({ Component, pageProps }) {
       </Head>
       <main className={styles.main}>
         <Navbar></Navbar>
-        <Component {...pageProps} />
+        <NotificationProvider>
+          <Component {...pageProps} />
+          <Notification />
+        </NotificationProvider>
       </main>
       <NotificationContainer />
     </>
