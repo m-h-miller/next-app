@@ -1,47 +1,51 @@
-import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+import styles from '@/styles/Home.module.css'
 import { Container } from 'react-bootstrap';
-import useNotification from '../hooks/useNotification.ts';
+import useNotification from '../hooks/useNotification';
+import React from 'react';
 
 export default function Login() {
   const router = useRouter();
-
   const { addNotification } = useNotification();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = React.useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-  const data = {
-    email: event.target.email.value,
-    password: event.target.password.value,
-  }
-      
-  const response = await fetch('/api/auth', {
-    method: 'POST',
-    headers: {
+
+    const e = (event.target as HTMLFormElement)
+
+    const data = {
+      email: e.email.value,
+      password: e.password.value,
+    }
+
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    })
-      
+    });
+
     const result = await response.json()
-      
-    if (result.user) {
-      localStorage.setItem('user', JSON.stringify(result.user));
-      router.push('/feed');
-    } else {
-      addNotification({
-        message: result.error ? result.error : "Failed to authenticate.", 
-        status: "danger"
-      })
+
+    if (result) {
+      if (result.error) {
+        addNotification({
+          message: result.error,
+          status: "danger"
+        });
+      } else {
+        router.push('/login');
+      }
     }
-  }
+  }, [])
+
   return (
     <>
       <div className={styles.description} style={{ justifyContent: 'space-around' }}>
+        <Container>
+          <p>Register</p>
 
-        <Container fluid="md">
-          <p>Login&nbsp;</p>
           <form onSubmit={handleSubmit} style={{
             display: 'flex',
             flexDirection: 'column',
