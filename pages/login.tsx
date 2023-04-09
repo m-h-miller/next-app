@@ -31,7 +31,7 @@ export default function Login() {
       
     if (result.user) {
       localStorage.setItem('user', JSON.stringify(result.user));
-      router.push('/feed');
+      router.push('/');
     } else {
       addNotification({
         message: result.error ? result.error : "Failed to authenticate.", 

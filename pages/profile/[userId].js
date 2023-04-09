@@ -30,7 +30,7 @@ export default function Profile({ posts }) {
         </form>
       </div>
       <div>
-        <p>My Posts</p>
+        <p>Posts</p>
         {
           posts.map(i => (
             <li key={i.id}>

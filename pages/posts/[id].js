@@ -7,13 +7,14 @@ import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { NotificationManager } from 'react-notifications';
 import OwnedByCurrentUser from '@/components/OwnedByCurrentUser';
+import React from 'react';
 
 const Post = ({ post = {} }) => {
   const { data: currentUser } = useSWR("user", storage);
 
   const router = useRouter()
 
-  const handleDelete = async (e) => {
+  const handleDelete = React.useCallback(async (e) => {
     e.preventDefault();
 
     const data = {
@@ -33,7 +34,7 @@ const Post = ({ post = {} }) => {
       NotificationManager.success("Successfully deleted")
       router.push('/')
     }
-  }
+  }, []);
 
   return ( 
     <>
