@@ -4,27 +4,20 @@ import { Button } from 'react-bootstrap';
 import useSWR from "swr";
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNotification } from '@/hooks/useNotification'
+import getUser from '@/utils/getUser';
 
 const Post = ({ post = {} }) => {
   const { data: currentUser } = useSWR("user", storage);
-  const isAuthor = post?.author?.id === currentUser?.id;
-
   const router = useRouter()
   const { addNotification } = useNotification();
-
-  useEffect(() => {
-    if (!isAuthor) {
-      router.push('/')
-    }
-  }, [])
 
   const [published, setPublished] = useState(post.published)
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = React.useCallback(async (e) => {
     e.preventDefault();
 
     const data = {
@@ -47,7 +40,7 @@ const Post = ({ post = {} }) => {
       addNotification({ message: "Successfully updated", status: "success" })
       router.push(`/posts/${post.id}`)
     }
-  }
+  }, []);
 
   return ( 
     <>
@@ -102,6 +95,7 @@ const Post = ({ post = {} }) => {
 
 export async function getServerSideProps(context) {
   const { query: { id } } = context;
+  const session = await getUser(context.req, context.res)
 
   const post = await prisma.post.findUnique({
     where: {
@@ -116,6 +110,18 @@ export async function getServerSideProps(context) {
       }
     }
   })
+
+  if (post.authorId !== session.userId) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      },
+      props: {
+      }
+    }
+  }
+
   if (post) {
     delete post.author.password
   } else {
