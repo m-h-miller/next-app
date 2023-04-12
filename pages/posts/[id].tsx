@@ -8,17 +8,18 @@ import { useRouter } from 'next/router';
 import { NotificationManager } from 'react-notifications';
 import OwnedByCurrentUser from '@/components/OwnedByCurrentUser';
 import React from 'react';
+import { PostWithAuthor } from '@/components/Posts';
 
-const Post = ({ post = {} }) => {
+const Post = ({ post }: { post: PostWithAuthorDetails }) => {
   const { data: currentUser } = useSWR("user", storage);
 
   const router = useRouter()
 
-  const handleDelete = React.useCallback(async (e) => {
+  const handleDelete = React.useCallback(async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const data = {
-      id: post.id
+      id: post?.id
     }
 
     const response = await fetch('/api/posts/delete', {
@@ -41,16 +42,16 @@ const Post = ({ post = {} }) => {
       <div>
         <div style={{ padding: '2rem', background: '#333', color: 'white' }}>
           <Container>
-            <h1>{post.title}</h1>
+            <h1>{post?.title}</h1>
             <p style={{ display: 'flex', flexDirection: 'column' }}>
-              <small>Created: {post.createdAt?.toLocaleString()}</small>
-              <small>Updated: {post.updatedAt?.toLocaleString()}</small>
+              <small>Created: {post?.createdAt?.toLocaleString()}</small>
+              <small>Updated: {post?.updatedAt?.toLocaleString()}</small>
             </p>
             <p>
-              <span>Published: {post.published?.toString()}</span>
+              <span>Published: {post?.published?.toString()}</span>
             </p>
-            <OwnedByCurrentUser ownerId={post?.author?.id}>
-              <Link href={`/posts/${post.id}/edit`}>
+            <OwnedByCurrentUser ownerId={post?.authorId}>
+              <Link href={`/posts/${post?.id}/edit`}>
                 <Button variant="outline-secondary">
                   Edit
                 </Button>
@@ -68,7 +69,7 @@ const Post = ({ post = {} }) => {
       <div style={{ padding: '2rem' }}>
       <Container>
         <p>
-          {post.content}
+          {post?.content}
         </p>
       </Container>
       </div>
@@ -76,10 +77,16 @@ const Post = ({ post = {} }) => {
   )
 }
 
-export async function getServerSideProps(context) {
+type PostWithAuthorDetails = PostWithAuthor & {
+  author: {
+    password?: string,
+  }
+} | null;
+
+export async function getServerSideProps(context: { query: { id: string; }; }) {
   const { query: { id } } = context;
 
-  const post = await prisma.post.findUnique({
+  const post: PostWithAuthorDetails = await prisma.post.findUnique({
     where: {
       id
     },

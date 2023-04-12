@@ -26,9 +26,12 @@ type NotificationProviderProps = {
 
 export default function NotificationProvider({ children }: NotificationProviderProps) {
     const [notification, setNotification] = useState<UINotification | null>(null)
-    const removeNotification = () => setNotification(null)
 
-    const addNotification = (uiNotification: UINotification) => {
+    function removeNotification(): void {
+        setNotification(null);
+    }
+
+    function addNotification(uiNotification: UINotification): void {
         setNotification(uiNotification)
         window.setTimeout(() => {
             removeNotification()
@@ -37,8 +40,8 @@ export default function NotificationProvider({ children }: NotificationProviderP
 
     const contextValue: NotificationContext = {
         notification,
-        addNotification: useCallback((uiNotification: UINotification) => addNotification(uiNotification), []),
-        removeNotification: useCallback(() => removeNotification(), [])
+        addNotification: useCallback(addNotification, []),
+        removeNotification: useCallback(removeNotification, [])
     }
 
     return (

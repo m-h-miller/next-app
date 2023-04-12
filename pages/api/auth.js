@@ -33,12 +33,12 @@ export default async function handler(req, res) {
 
                 res.status(200).json({ user });
             } else {
-                res.status(500).json("Internal server error");
+                res.status(500).json({ error: "Internal server error" });
             }
 
         } catch (e) {
             console.error(e);
-            res.status(500).json();
+            res.status(500).json({ error: "internal server error" });
         }
     } else {
         res.status(500).json();

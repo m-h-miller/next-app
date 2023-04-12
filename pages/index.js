@@ -33,6 +33,11 @@ export async function getServerSideProps() {
         }
       }
     },
+    orderBy: [
+      {
+        createdAt: 'desc'
+      }
+    ],
     take: 10
   })
 

@@ -6,20 +6,19 @@ export default function Posts({ posts = [] }: { posts: PostWithAuthor[] }) {
     return (
         <Container>
             {posts.map(i => (
-                <Post post={i} />
+                <Post post={i} key={i.id} />
             ))}
         </Container>
     )
 }
 
-type PostWithAuthor = Post & {
+export type PostWithAuthor = Post & {
     author: {
         email: string
     }
 }
 
 function Post({ post }: { post: PostWithAuthor }) {
-    console.log({ post })
     return (
         <div style={{ marginTop: '4rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
