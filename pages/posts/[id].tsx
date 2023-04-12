@@ -5,15 +5,16 @@ import { Button } from 'react-bootstrap';
 import useSWR from "swr";
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { NotificationManager } from 'react-notifications';
 import OwnedByCurrentUser from '@/components/OwnedByCurrentUser';
 import React from 'react';
 import { PostWithAuthor } from '@/components/Posts';
+import useNotification from '@/hooks/useNotification';
 
 const Post = ({ post }: { post: PostWithAuthorDetails }) => {
   const { data: currentUser } = useSWR("user", storage);
 
   const router = useRouter()
+  const { addNotification } = useNotification()
 
   const handleDelete = React.useCallback(async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -32,7 +33,7 @@ const Post = ({ post }: { post: PostWithAuthorDetails }) => {
     }).then(res => res.json())
 
     if (response?.success) {
-      NotificationManager.success("Successfully deleted")
+      addNotification({ message: "Successfully deleted", status: "success" })
       router.push('/')
     }
   }, []);

@@ -1,8 +1,10 @@
 import prisma from '@/prisma/';
 import Link from 'next/link';
 import getUser from '@/utils/getUser';
+import { Container } from 'react-bootstrap';
+import OwnedByCurrentUser from '@/components/OwnedByCurrentUser';
 
-export default function Profile({ posts }) {
+export default function Profile({ posts, userId }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -21,14 +23,16 @@ export default function Profile({ posts }) {
   }
 
   return (
-    <>
+    <Container>
       <div>
-        <p>Settings</p>
-        <form onSubmit={handleSubmit}>
-          <input type="text" id="email" name="email" placeholder="Email" />
-          <input type="text" id="name" name="name" placeholder="Name" />
-          <button type="submit">Submit</button>
-        </form>
+        <OwnedByCurrentUser ownerId={userId}>
+          <p>Settings</p>
+          <form onSubmit={handleSubmit}>
+            <input type="text" id="email" name="email" placeholder="Email" />
+            <input type="text" id="name" name="name" placeholder="Name" />
+            <button type="submit">Submit</button>
+          </form>
+        </OwnedByCurrentUser>
       </div>
       <div>
         <p>Posts</p>
@@ -40,7 +44,7 @@ export default function Profile({ posts }) {
           ))
         }
       </div>
-    </>
+    </Container>
   );
 }
 
@@ -63,7 +67,8 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      posts
+      posts,
+      userId
     },
   }
 }

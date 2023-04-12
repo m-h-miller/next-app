@@ -4,14 +4,15 @@ import { Button } from 'react-bootstrap';
 import useSWR from "swr";
 import { Container } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { NotificationManager } from 'react-notifications';
 import { useEffect, useState } from 'react';
+import { useNotification } from '@/hooks/useNotification'
 
 const Post = ({ post = {} }) => {
   const { data: currentUser } = useSWR("user", storage);
   const isAuthor = post?.author?.id === currentUser?.id;
 
   const router = useRouter()
+  const { addNotification } = useNotification();
 
   useEffect(() => {
     if (!isAuthor) {
@@ -43,7 +44,7 @@ const Post = ({ post = {} }) => {
     }).then(res => res.json())
 
     if (response?.success) {
-      NotificationManager.success("Successfully updated")
+      addNotification({ message: "Successfully updated", status: "success" })
       router.push(`/posts/${post.id}`)
     }
   }

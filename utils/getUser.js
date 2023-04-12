@@ -6,17 +6,10 @@ export default async function getUser(req, res) {
 
   try {
     let session = await prisma.session.findUnique({
-        where: {
-            id: token
-        },
-        include: {
-            owner: true
-        }
+      where: {
+        id: token
+      },
     })
-
-    if (session) {
-        delete session.owner.password
-    }
 
     return session;
   } catch (error) {
