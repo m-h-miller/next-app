@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import prisma from '../../prisma/';
 import bcrypt from 'bcrypt';
+import { setCookie } from 'cookies-next'
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -30,6 +31,13 @@ export default async function handler(req, res) {
                 })
 
                 user.sessionToken = session.id
+
+                setCookie('sessionToken', session.id, {
+                    req,
+                    res,
+                    maxAge: 60 * 60 * 24,
+                    path: '/'
+                });
 
                 res.status(200).json({ user });
             } else {

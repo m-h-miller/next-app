@@ -1,5 +1,6 @@
 import prisma from '@/prisma/';
 import Link from 'next/link';
+import getUser from '@/utils/getUser';
 
 export default function Profile({ posts }) {
   const handleSubmit = async (e) => {
@@ -45,10 +46,17 @@ export default function Profile({ posts }) {
 
 export async function getServerSideProps(context) {
   const { query: { userId } } = context;
+  const session = await getUser(context.req, context.res)
+  
+  let isOwner = false
+  if (session.userId === userId) {
+    isOwner = true
+  } 
 
   const posts = await prisma.post.findMany({
     where: {
-      authorId: userId
+      authorId: userId,
+      published: isOwner ? undefined : true
     },
     take: 10
   })
